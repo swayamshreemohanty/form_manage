@@ -65,13 +65,21 @@ class MobileDeviceWidget extends StatelessWidget {
                 icon: const Icon(Icons.edit),
                 onPressed: () {
                   //Navigate to the MobileDeviceScreen
-                  Navigator.of(context).push(
+                  Navigator.of(context)
+                      .push(
                     MaterialPageRoute(
                       builder: (context) => MobileDeviceScreen(
                         existingMobileDevice: mobileDevice,
                       ),
                     ),
-                  );
+                  )
+                      .then((result) {
+                    if (result != null && context.mounted) {
+                      context
+                          .read<MobileListCubit>()
+                          .insertOrUpdateMobileDevice(result);
+                    }
+                  });
                 },
               ),
 

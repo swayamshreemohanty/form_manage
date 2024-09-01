@@ -48,17 +48,16 @@ class MobileListCubit extends Cubit<MobileListState> {
       //check if the mobile device already exists, if it does, update it, else add it
       for (var i = 0; i < mobileDevices.length; i++) {
         if (mobileDevices[i].id == mobileDevice.id) {
-          final updatedMobileDevices =
-              List<MobileDeviceModel>.from(mobileDevices)..[i] = mobileDevice;
-          emit(MobileListLoaded(updatedMobileDevices));
+          mobileDevices[i] = mobileDevice;
+          emit(MobileListLoaded(mobileDevices));
           return;
         }
       }
 
       //add the mobile device
-      final updatedMobileDevices = List<MobileDeviceModel>.from(mobileDevices)
-        ..add(mobileDevice);
-      emit(MobileListLoaded(updatedMobileDevices));
+      mobileDevices.add(mobileDevice);
+
+      emit(MobileListLoaded(mobileDevices));
       return;
     }
   }

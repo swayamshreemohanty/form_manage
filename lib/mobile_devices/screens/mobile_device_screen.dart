@@ -115,7 +115,9 @@ class _MobileDeviceScreenState extends State<MobileDeviceScreen> {
 
                                 //create instance of MobileDeviceModel
                                 final mobileDevice = MobileDeviceModel(
-                                  id: const Uuid().v4(),
+                                  id: isEditMode
+                                      ? widget.existingMobileDevice!.id
+                                      : const Uuid().v4(),
                                   name: _nameController.text,
                                   imei: _imeiController.text,
                                 );
