@@ -39,7 +39,7 @@ class MobileListCubit extends Cubit<MobileListState> {
     }
   }
 
-  //insert mobile device
+  //insert or update a mobile device
   void insertOrUpdateMobileDevice(MobileDeviceModel mobileDevice) {
     final currentState = state;
     if (currentState is MobileListLoaded) {
