@@ -15,6 +15,7 @@ class ManageMobileDeviceCubit extends Cubit<ManageMobileDeviceState> {
     Future.delayed(const Duration(seconds: 2), () {
       emit(ManageMobileDeviceRequestSuccess(
         isEdit ? 'Device updated' : 'Device added',
+        mobileDevice,
       ));
     });
   }

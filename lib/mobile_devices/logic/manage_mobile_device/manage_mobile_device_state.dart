@@ -8,8 +8,9 @@ final class ManageMobileDeviceRequestLoading extends ManageMobileDeviceState {}
 
 final class ManageMobileDeviceRequestSuccess extends ManageMobileDeviceState {
   final String message;
+  final MobileDeviceModel mobileDevice;
 
-  ManageMobileDeviceRequestSuccess(this.message);
+  ManageMobileDeviceRequestSuccess(this.message, this.mobileDevice);
 }
 
 final class ManageMobileDeviceRequestError extends ManageMobileDeviceState {
