@@ -5,13 +5,16 @@ import 'package:form_manage/mobile_devices/models/mobile_device_model.dart';
 import 'package:uuid/uuid.dart';
 
 class MobileDeviceScreen extends StatefulWidget {
-  const MobileDeviceScreen({super.key});
+  final MobileDeviceModel? existingMobileDevice;
+  const MobileDeviceScreen({super.key, this.existingMobileDevice});
 
   @override
   State<MobileDeviceScreen> createState() => _MobileDeviceScreenState();
 }
 
 class _MobileDeviceScreenState extends State<MobileDeviceScreen> {
+  late bool isEditMode = widget.existingMobileDevice != null;
+
   //form key
   final _formKey = GlobalKey<FormState>();
 
@@ -20,6 +23,19 @@ class _MobileDeviceScreenState extends State<MobileDeviceScreen> {
 
   //imei controller
   final _imeiController = TextEditingController();
+
+  void preFillForm() {
+    if (isEditMode) {
+      _nameController.text = widget.existingMobileDevice!.name;
+      _imeiController.text = widget.existingMobileDevice!.imei;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    preFillForm();
+  }
 
   //dispose controllers
   @override
@@ -76,6 +92,13 @@ class _MobileDeviceScreenState extends State<MobileDeviceScreen> {
                   listener: (context, manageMobileDeviceState) {
                     if (manageMobileDeviceState
                         is ManageMobileDeviceRequestSuccess) {
+                      //show snackbar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(manageMobileDeviceState.message),
+                        ),
+                      );
+
                       Navigator.of(context)
                           .pop(manageMobileDeviceState.mobileDevice);
                     }
@@ -87,7 +110,6 @@ class _MobileDeviceScreenState extends State<MobileDeviceScreen> {
                           ? null
                           : () {
                               if (_formKey.currentState!.validate()) {
-
                                 //close the keyboard
                                 FocusScope.of(context).unfocus();
 
@@ -100,13 +122,16 @@ class _MobileDeviceScreenState extends State<MobileDeviceScreen> {
 
                                 context
                                     .read<ManageMobileDeviceCubit>()
-                                    .manageMobileDevice(mobileDevice);
+                                    .manageMobileDevice(
+                                      mobileDevice,
+                                      isEdit: isEditMode,
+                                    );
                               }
                             },
                       child: manageMobileDeviceState
                               is ManageMobileDeviceRequestLoading
                           ? const CircularProgressIndicator()
-                          : const Text('Save'),
+                          : Text(isEditMode ? 'Update' : 'Save'),
                     );
                   },
                 ),

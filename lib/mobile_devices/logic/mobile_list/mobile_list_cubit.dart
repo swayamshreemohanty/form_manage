@@ -29,12 +29,12 @@ class MobileListCubit extends Cubit<MobileListState> {
     });
   }
 
-  void deleteMobileDevice(int index) {
+  void deleteMobileDevice(String id) {
     final currentState = state;
     if (currentState is MobileListLoaded) {
       final mobileDevices = currentState.mobileDevices;
       final updatedMobileDevices = List<MobileDeviceModel>.from(mobileDevices)
-        ..removeAt(index);
+        ..removeWhere((mobileDevice) => mobileDevice.id == id);
       emit(MobileListLoaded(updatedMobileDevices));
     }
   }
